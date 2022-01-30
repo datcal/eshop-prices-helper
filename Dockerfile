@@ -44,7 +44,7 @@ RUN apt-get update \
     && apt-get install -y mysql-client \
     && apt-get -y autoremove \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN debconf-set-selections <<< "mysql-community-server mysql-community-server/root-pass password toor"
 RUN debconf-set-selections <<< "mysql-community-server mysql-community-server/re-root-pass password toor"
