@@ -50,6 +50,12 @@
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
 
+        @if (session('status'))
+            <div class="alert alert-{{ session('class') }}">
+                {{ session('status') }}
+            </div>
+        @endif
+
         <form action="{{route('add_new_request')}}" method="POST">
             @csrf
             <h1 class="h3 mb-3 fw-normal">Eshop Price Tracker</h1>
@@ -64,45 +70,9 @@
 
             <div class="form-floating">
                 <select class="form-control" id="currency" name="currency">
-                    <option value="ARS">Argentine Peso – $</option>
-                    <option value="AUD">Australian Dollar – $</option>
-                    <option value="BGN">Bulgarian Lev – лв.</option>
-                    <option value="BRL">Brazilian Real – R$</option>
-                    <option value="CAD">Canadian Dollar – $</option>
-                    <option value="CHF">Swiss Franc – CHF</option>
-                    <option value="CLP">Chilean Peso – $</option>
-                    <option value="CNY">Chinese Renminbi Yuan – ¥</option>
-                    <option value="COP">Colombian Peso – $</option>
-                    <option value="CZK">Czech Koruna – Kč</option>
-                    <option value="DKK">Danish Krone – kr.</option>
-                    <option value="EUR">Euro – €</option>
-                    <option value="GBP">British Pound – £</option>
-                    <option value="GTQ">Guatemalan Quetzal – Q</option>
-                    <option value="HKD">Hong Kong Dollar – $</option>
-                    <option value="HRK">Croatian Kuna – kn</option>
-                    <option value="HUF">Hungarian Forint – Ft</option>
-                    <option value="IDR">Indonesian Rupiah – Rp</option>
-                    <option value="ILS">Israeli New Sheqel – ₪</option>
-                    <option value="INR">Indian Rupee – ₹</option>
-                    <option value="JPY">Japanese Yen – ¥</option>
-                    <option value="KRW">South Korean Won – ₩</option>
-                    <option value="MXN">Mexican Peso – $</option>
-                    <option value="MYR">Malaysian Ringgit – RM</option>
-                    <option value="NOK">Norwegian Krone – kr</option>
-                    <option value="NZD">New Zealand Dollar – $</option>
-                    <option value="PEN">Peruvian Sol – S/</option>
-                    <option value="PHP">Philippine Peso – ₱</option>
-                    <option value="PLN">Polish Złoty – zł</option>
-                    <option value="RON">Romanian Leu – Lei</option>
-                    <option value="RUB">Russian Ruble – ₽</option>
-                    <option value="SEK">Swedish Krona – kr</option>
-                    <option value="SGD">Singapore Dollar – $</option>
-                    <option value="THB">Thai Baht – ฿</option>
-                    <option value="TRY">Turkish Lira – ₺</option>
-                    <option value="TWD">New Taiwan Dollar – $</option>
-                    <option value="UAH">Ukrainian Hryvnia – ₴</option>
-                    <option value="USD">United States Dollar – $</option>
-                    <option value="ZAR">South African Rand – R</option>
+                    @foreach($currencies as $currencyCode => $currency)
+                        <option @if($selected_currency == $currencyCode)  selected @endif value="{{$currencyCode}}">{{$currency}}</option>
+                    @endforeach
                 </select>
                 <label for="floatingInput">Currency</label>
             </div>

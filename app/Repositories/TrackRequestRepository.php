@@ -3,14 +3,19 @@
 namespace App\Repositories;
 
 use App\Models\TrackRequest;
+use App\Services\Constants\CountryConstant;
+use App\Services\Constants\CurrencyConstant;
 use Illuminate\Support\Str;
 
 class TrackRequestRepository{
 
 
     public function getCountries() : array{
-        $countries = ['Argentina','Australia','Austria','Belgium','Brazil','Bulgaria','Canada','Chile','Colombia','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland','France','Germany','Greece','Hong Kong','Hungary','Ireland','Israel','Italy','Japan','Latvia','Lithuania','Luxembourg','Malta','Mexico','Netherlands','New Zealand','Norway','Peru','Poland','Portugal','Romania','Russia','Slovakia','Slovenia','South Africa','Spain','Sweden','Switzerland','United Kingdom','United States'];
-        return $countries;
+        return CountryConstant::COUNTRIES;
+    }
+
+    public function getCurrencies() : array{
+        return CurrencyConstant::CURRENCY;
     }
 
     public function add($mail,$url,$currency,$price,$countries) : TrackRequest{
@@ -29,5 +34,9 @@ class TrackRequestRepository{
         $trackRequest->blocked = $blocked;
         $trackRequest->save();
         return $trackRequest;
+    }
+
+    public function delete($token,$mail){
+        return TrackRequest::where('token',$token)->where('mail',$mail)->delete();
     }
 }

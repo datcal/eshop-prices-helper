@@ -18,9 +18,11 @@ class IndexController extends Controller
 
     public function index(Request $request){
         $countries = $this->trackRequestRepository->getCountries();
+        $currencies = $this->trackRequestRepository->getCurrencies();
         $mail = @$_COOKIE["mail"];
         $blocked = explode(",",@$_COOKIE["blocked"]);
-        return view('request',compact('countries','mail','blocked'));
+        $selected_currency = @$_COOKIE['currency'];
+        return view('request',compact('countries','currencies','mail','blocked','selected_currency'));
     }
 
     public function add(AddTrackRequest $request){
@@ -29,6 +31,7 @@ class IndexController extends Controller
 
         setcookie('mail', $request->mail,time() + (86400 * 30), "/");
         setcookie('blocked', $trackRequest->blocked,time() + (86400 * 30), "/");
+        setcookie('currency', $trackRequest->currency,time() + (86400 * 30), "/");
 
         session(['result' => $trackRequest->toArray()]);
 
@@ -45,8 +48,11 @@ class IndexController extends Controller
     }
 
     public function delete(Request $request,$token,$mail){
+        $deleted = $this->trackRequestRepository->delete($token,$mail);
+        $data = $deleted == 1 ? array('status' => 'Data deleted!','class'=>'success') :
+                                array('status' => 'Data not deleted!','class'=>'danger');
 
-        die($token);
+        return redirect('/')->with($data);
     }
 
 }
